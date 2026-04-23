@@ -79,7 +79,7 @@ fn print_help() {
     println!("Usage:\n  gimp-dir-getter [OPTION…] ");
     println!("\nExample usage:");
     println!("  gimp-dir-getter --only=3.0,flatpak");
-    println!("  gimp-dir-getter --ignore=macos --ignore=3.99");
+    println!("  gimp-dir-getter --ignore=snap --ignore=3.99");
     println!("\nOptions:");
     println!("  --even-versions           Only show even minor versions.");
     println!("  --odd-versions            Only show odd minor versions.");
