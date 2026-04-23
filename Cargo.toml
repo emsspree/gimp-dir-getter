@@ -1,0 +1,10 @@
+[package]
+name = "gimp-dir-getter"
+description = "Looks for to GIMP 3 settings directories and prints its paths"
+version = "0.1.0"
+keywords = ["gamedev", "graphics"]
+repository = "https://github.com/emsspree/"
+license = "GPL-3.0-or-later"
+edition = "2024"
+
+[dependencies]
