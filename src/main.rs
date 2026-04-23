@@ -43,8 +43,7 @@ fn main() {
             even_only = true;
         } else if arg == "--odd-versions" {
             odd_only = true;
-        } else if arg.starts_with("--only=") {
-            let val = &arg["--only=".len()..];
+        } else if let Some(val) = arg.strip_prefix("--only=") {
             for v in val.split(',') {
                 if !v.is_empty() {
                     if tags_list.contains(&v) {
@@ -54,8 +53,7 @@ fn main() {
                     }
                 }
             }
-        } else if arg.starts_with("--ignore=") {
-            let val = &arg["--ignore=".len()..];
+        } else if let Some(val) = arg.strip_prefix("--ignore=") {
             for v in val.split(',') {
                 if !v.is_empty() {
                     if tags_list.contains(&v) {
@@ -67,9 +65,6 @@ fn main() {
             }
         }
     }
-
-    // ... (Suche der Home-Verzeichnisse und Pfade bleibt gleich)
-
 
     // Get the user's home directory from the environment variable
     let home = env::var("HOME")
@@ -122,46 +117,44 @@ fn main() {
         if let Ok(entries) = fs::read_dir(base_path) {
             for entry in entries.flatten() {
                 let path = entry.path();
-                if path.is_dir() {
-                    if let Some(file_name) = path.file_name().and_then(|s| s.to_str()) {
-                        // Check if the directory name represents a 3.x version
-                        if file_name.starts_with("3.") && file_name.chars().all(|c| c.is_digit(10) || c == '.') {
-                            // Extract components for parity check
-                            let components: Vec<u32> = file_name.split('.')
-                                .map(|s| s.parse::<u32>().unwrap_or(0))
-                                .collect();
-                            
-                            // Parity check (even/odd) on the minor version
-                            if components.len() >= 2 {
-                                let minor = components[1];
-                                if even_only && minor % 2 != 0 {
-                                    continue;
-                                }
-                                if odd_only && minor % 2 == 0 {
-                                    continue;
-                                }
-                            }
-
-                            // Apply filters
-                            // 1. Only Version filter (AND)
-                            if !only_versions.is_empty() && !only_versions.contains(file_name) {
+                if let Some(file_name) = path.file_name().and_then(|s| s.to_str()).filter(|_| path.is_dir()) {
+                    // Check if the directory name represents a 3.x version
+                    if file_name.starts_with("3.") && file_name.chars().all(|c| c.is_ascii_digit() || c == '.') {
+                        // Extract components for parity check
+                        let components: Vec<u32> = file_name.split('.')
+                            .map(|s| s.parse::<u32>().unwrap_or(0))
+                            .collect();
+                        
+                        // Parity check (even/odd) on the minor version
+                        if components.len() >= 2 {
+                            let minor = components[1];
+                            if even_only && !minor.is_multiple_of(2) {
                                 continue;
                             }
-                            // 2. Only Tag filter (AND)
-                            if !only_tags.is_empty() && !only_tags.contains(tag) {
+                            if odd_only && minor.is_multiple_of(2) {
                                 continue;
                             }
-                            // 3. Ignore Version filter
-                            if ignore_versions.contains(file_name) {
-                                continue;
-                            }
-                            // 4. Ignore Tag filter
-                            if ignore_tags.contains(tag) {
-                                continue;
-                            }
-                            
-                            found_paths.push(path);
                         }
+
+                        // Apply filters
+                        // 1. Only Version filter (AND)
+                        if !only_versions.is_empty() && !only_versions.contains(file_name) {
+                            continue;
+                        }
+                        // 2. Only Tag filter (AND)
+                        if !only_tags.is_empty() && !only_tags.contains(tag) {
+                            continue;
+                        }
+                        // 3. Ignore Version filter
+                        if ignore_versions.contains(file_name) {
+                            continue;
+                        }
+                        // 4. Ignore Tag filter
+                        if ignore_tags.contains(tag) {
+                            continue;
+                        }
+                        
+                        found_paths.push(path);
                     }
                 }
             }
