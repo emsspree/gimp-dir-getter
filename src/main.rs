@@ -79,12 +79,12 @@ fn print_help() {
     println!("Usage:\n  gimp-dir-getter [OPTION…] ");
     println!("\nExample usage:");
     println!("  gimp-dir-getter --only=3.0,flatpak");
-    println!("  gimp-dir-getter --ignore=snap --ignore=3.99");
+    println!("  gimp-dir-getter --ignore=snap,flatpak --ignore=3.99");
     println!("\nOptions:");
-    println!("  --even-versions           Only show even minor versions.");
-    println!("  --odd-versions            Only show odd minor versions.");
+    println!("  --even                    Only show even minor versions.");
+    println!("  --odd                     Only show odd minor versions.");
     println!("  --only=<V|TAG>,<V|TAG>    Only include specific versions AND tags.");
-    println!("                            Tags: default, flatpak, snap, macos, windows");
+    println!("                            Tags: xdg, flatpak, snap, macos, windows");
     println!("  --ignore=<V|TAG>,<V|TAG>  Exclude specific versions or tags.");
     println!("  -h, --help                Show this help message");
     println!("  -v, --version             Show program version");
@@ -101,12 +101,12 @@ fn parse_args(args: &[String]) -> Config {
         odd_only: false,
     };
 
-    let tags_list = ["default", "flatpak", "snap", "macos", "windows"];
+    let tags_list = ["xdg", "flatpak", "snap", "macos", "windows"];
 
     for arg in args.iter().skip(1) {
-        if arg == "--even-versions" {
+        if arg == "--even" {
             config.even_only = true;
-        } else if arg == "--odd-versions" {
+        } else if arg == "--odd" {
             config.odd_only = true;
         } else if let Some(val) = arg.strip_prefix("--only=") {
             for v in val.split(',') {
@@ -152,10 +152,10 @@ fn get_search_paths() -> Vec<(PathBuf, &'static str)> {
     }
 
     if let Ok(xdg_config) = env::var("XDG_CONFIG_HOME") {
-        search_paths.push((PathBuf::from(xdg_config).join("GIMP"), "default"));
+        search_paths.push((PathBuf::from(xdg_config).join("GIMP"), "xdg"));
     } else {
         #[cfg(not(target_os = "windows"))]
-        search_paths.push((home_path.join(".config/GIMP"), "default"));
+        search_paths.push((home_path.join(".config/GIMP"), "xdg"));
     }
 
     #[cfg(target_os = "macos")]
