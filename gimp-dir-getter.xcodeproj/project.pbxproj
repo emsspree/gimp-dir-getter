@@ -1,6 +1,5 @@
 // !$*UTF8*$!
 {
-	/* generated with cargo-xcode 1.11.0 */
 	archiveVersion = 1;
 	classes = {
 	};
@@ -32,7 +31,7 @@
 
 /* Begin PBXFileReference section */
 		CA009C84C3E58DEB92142597 /* gimp-dir-getter */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "gimp-dir-getter"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CAF9163A18633EF4668187A5 /* Cargo.toml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Cargo.toml; path = Cargo.toml; sourceTree = "<group>"; };
+		CAF9163A18633EF4668187A5 /* Cargo.toml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cargo.toml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -124,25 +123,27 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		CA00DA0208BD43795857BDCC /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CARGO_XCODE_CARGO_DEP_FILE_NAME = "gimp-dir-getter.d";
-				CARGO_XCODE_CARGO_FILE_NAME = "gimp-dir-getter";
-				PRODUCT_NAME = "gimp-dir-getter";
-				SUPPORTED_PLATFORMS = macosx;
-			};
-			name = Release;
-		};
 		CA005EEB1C8F43795857BDCC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CARGO_XCODE_CARGO_DEP_FILE_NAME = "gimp-dir-getter.d";
 				CARGO_XCODE_CARGO_FILE_NAME = "gimp-dir-getter";
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
 				PRODUCT_NAME = "gimp-dir-getter";
 				SUPPORTED_PLATFORMS = macosx;
 			};
 			name = Debug;
+		};
+		CA00DA0208BD43795857BDCC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CARGO_XCODE_CARGO_DEP_FILE_NAME = "gimp-dir-getter.d";
+				CARGO_XCODE_CARGO_FILE_NAME = "gimp-dir-getter";
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				PRODUCT_NAME = "gimp-dir-getter";
+				SUPPORTED_PLATFORMS = macosx;
+			};
+			name = Release;
 		};
 		CAF7E4BA27C53CC16B37690B /* Release */ = {
 			isa = XCBuildConfiguration;
